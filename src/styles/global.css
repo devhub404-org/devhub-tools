@@ -75,3 +75,53 @@ html, body {
 .navbar-icon-link:hover {
   color: var(--text);
 }
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.home-hero {
+  margin-bottom: 4rem;
+  border-left: 2px solid var(--border);
+  padding-left: 1.5rem;
+}
+
+.hero-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.hero-title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 480px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background-color: var(--border);
+  border: 1px solid var(--border);
+}
+
+.empty-state {
+  background-color: var(--bg);
+  color: var(--muted);
+  font-size: 12px;
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
