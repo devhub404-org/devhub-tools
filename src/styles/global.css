@@ -314,3 +314,29 @@ html, body {
   align-items: center;
   justify-content: space-between;
 }
+
+.tool-mode-switcher {
+  display: flex;
+  border: 1px solid var(--border);
+  width: fit-content;
+}
+
+.tool-mode-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tool-mode-btn:hover {
+  color: var(--text);
+}
+
+.tool-mode-btn.active {
+  background-color: var(--surface);
+  color: var(--text);
+}
