@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import { getTools, getToolsById } from "../../registry"
+
+export function getStaticPaths() {
+  const tools = getTools()
+  return tools.map((tool) => ({
+    params: { id: tool.id },
+  }))
+}
+
+const { id } = Astro.params
+const tool = getToolsById(id!)
+
+if (!tool) {
+  return Astro.redirect("/")
+}
+
+const ToolComponent = tool.component
+---
+
+<BaseLayout title={`${tool.name} — DevHub 404 Tools`}>
+  <div class="tool-page">
+    <nav class="tool-breadcrumb" aria-label="Navegação">
+      <a href="/" class="breadcrumb-link">// início</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">{tool.name}</span>
+    </nav>
+
+    <header class="tool-header">
+      <span class="tool-header-category">{tool.category}</span>
+      <h1 class="tool-header-title">{tool.name}</h1>
+      <p class="tool-header-description">{tool.description}</p>
+    </header>
+
+    <div class="tool-body">
+      <ToolComponent client:load />
+    </div>
+  </div>
+</BaseLayout>
