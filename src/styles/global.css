@@ -126,7 +126,6 @@ html, body {
   grid-column: 1 / -1;
 }
 
-/* ── Tool Card ── */
 .tool-card {
   background-color: var(--bg);
   padding: 1.75rem;
@@ -175,4 +174,137 @@ html, body {
   opacity: 0;
   transition: opacity 0.15s ease, transform 0.15s ease;
   align-self: flex-end;
+}
+
+.tool-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tool-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 11px;
+}
+
+.breadcrumb-link {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-link:hover {
+  color: var(--text);
+}
+
+.breadcrumb-sep {
+  color: var(--muted);
+}
+
+.breadcrumb-current {
+  color: var(--text);
+}
+
+.tool-header {
+  border-left: 2px solid var(--border);
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tool-header-category {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tool-header-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tool-header-description {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tool-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tool-input-area,
+.tool-output-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tool-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tool-textarea {
+  width: 100%;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 1rem;
+  resize: vertical;
+  min-height: 160px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.tool-textarea:focus {
+  border-color: var(--muted);
+}
+
+.tool-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tool-btn {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.tool-btn:hover {
+  background-color: var(--border);
+}
+
+.tool-btn-primary {
+  border-color: var(--text);
+}
+
+.tool-btn-primary:hover {
+  background-color: var(--text);
+  color: var(--bg);
+}
+
+.tool-error {
+  font-size: 12px;
+  color: #e05a5a;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e05a5a33;
+  background-color: #e05a5a11;
 }
