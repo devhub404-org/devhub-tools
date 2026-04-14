@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
+import DynamicTool from "../../components/DynamicTool"
 import { getTools, getToolById } from "../../registry"
 
 export function getStaticPaths() {
@@ -15,8 +16,6 @@ const tool = getToolById(id!)
 if (!tool) {
   return Astro.redirect("/")
 }
-
-const ToolComponent = tool.component
 ---
 
 <BaseLayout title={`${tool.name} — DevHub 404 Tools`}>
@@ -34,7 +33,7 @@ const ToolComponent = tool.component
     </header>
 
     <div class="tool-body">
-      <ToolComponent client:load />
+      <DynamicTool component={tool.component} client:only="react" />
     </div>
   </div>
 </BaseLayout>
