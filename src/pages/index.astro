@@ -1,20 +1,27 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro"
+import ToolCard from "../components/ToolCard"
+import { getTools } from "../registry"
+
+const tools = getTools()
 ---
 
 <BaseLayout title="DevHub 404 Tools">
-	<section class="home-hero">
-		<p class="hero-label">// Ferramentas</p>
-		<h1 class="hero-tittle">DevHub 404 Tools</h1>
-		<p class="hero-sub">
-			Utilitários para devs — sem distrações, sem cadastros e sem frescura.
-		</p>
-	</section>
+  <section class="home-hero">
+    <p class="hero-label">// ferramentas</p>
+    <h1 class="hero-title">DevHub 404 Tools</h1>
+    <p class="hero-sub">
+      Utilitários para devs — sem distrações, sem cadastro, sem frescura.
+    </p>
+  </section>
 
-	<section class="tools-grid" id="tools">
-		<!-- registry será injetado aqui no próximo step -->
-		 <p class="empty-state">Nenhuma ferramenta encontrada.</p>
-	</section>
+  <section class="tools-grid" id="tools">
+    {tools.length === 0 ? (
+      <p class="empty-state">Nenhuma ferramenta registrada ainda.</p>
+    ) : (
+      tools.map((tool) => (
+        <ToolCard tool={tool} />
+      ))
+    )}
+  </section>
 </BaseLayout>
-
-
