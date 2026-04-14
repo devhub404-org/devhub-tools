@@ -1,13 +1,14 @@
-import type { Tool } from '../types/tools';
+import type { Tool } from "../types/tools"
+import JsonFormatter from "../tools/json-formatter"
 
 const tools: Tool[] = [
-    // tools will be added here
-];
+  JsonFormatter,
+]
 
 export function getTools(): Tool[] {
-    return tools;
+  return tools
 }
 
-export function getToolsById(id: string): Tool | undefined {
-    return tools.find(tool => tool.id === id);
+export function getToolById(id: string): Tool | undefined {
+  return tools.find((tool) => tool.id === id)
 }
