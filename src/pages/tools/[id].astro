@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
-import { getTools, getToolsById } from "../../registry"
+import { getTools, getToolById } from "../../registry"
 
 export function getStaticPaths() {
   const tools = getTools()
@@ -10,7 +10,7 @@ export function getStaticPaths() {
 }
 
 const { id } = Astro.params
-const tool = getToolsById(id!)
+const tool = getToolById(id!)
 
 if (!tool) {
   return Astro.redirect("/")
