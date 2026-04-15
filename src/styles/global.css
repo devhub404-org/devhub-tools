@@ -340,3 +340,63 @@ html, body {
   background-color: var(--surface);
   color: var(--text);
 }
+
+.uuid-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tool-input-number {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+  width: 80px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.tool-input-number:focus {
+  border-color: var(--muted);
+}
+
+.uuid-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+}
+
+.uuid-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+  transition: background-color 0.15s ease;
+}
+
+.uuid-item:last-child {
+  border-bottom: none;
+}
+
+.uuid-item:hover {
+  background-color: var(--surface);
+}
+
+.uuid-value {
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  flex: 1;
+}
+
+.uuid-copy-btn {
+  font-size: 11px;
+  padding: 0.25rem 0.6rem;
+  flex-shrink: 0;
+}
