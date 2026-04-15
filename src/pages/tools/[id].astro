@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro"
 import { getTools, getToolById } from "../../registry"
 import JsonFormatterTool from "../../tools/json-formatter/component"
 import Base64Tool from "../../tools/base64-encoder/component"
+import UUIDGeneratorTool from "../../tools/uuid-generator/component"
 
 export function getStaticPaths() {
   const tools = getTools()
@@ -36,6 +37,7 @@ if (!tool) {
     <div class="tool-body">
       {id === "json-formatter" && <JsonFormatterTool client:only="react" />}
       {id === "base64-encoder" && <Base64Tool client:only="react" />}
+      {id === "uuid-generator" && <UUIDGeneratorTool client:only="react" />}
     </div>
   </div>
 </BaseLayout>
