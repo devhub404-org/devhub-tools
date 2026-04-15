@@ -31,6 +31,11 @@ const UUIDGeneratorTool: FC = () => {
     })
   }, [])
 
+  const clearSingle = useCallback((index: number) => {
+    setUuids((prev) => prev.filter((_, i) => i !== index))
+    setCopiedIndex(null)
+  }, [])
+
   const copyAll = useCallback(() => {
     if (!uuids.length) return
     navigator.clipboard.writeText(uuids.join("\n")).then(() => {
@@ -38,6 +43,12 @@ const UUIDGeneratorTool: FC = () => {
       setTimeout(() => setCopiedAll(false), 2000)
     })
   }, [uuids])
+
+  const clearAll = useCallback(() => {
+    setUuids([])
+    setCopiedIndex(null)
+    setCopiedAll(false)
+  }, [])
 
   return (
     <div className="tool-body">
@@ -71,21 +82,34 @@ const UUIDGeneratorTool: FC = () => {
             <span className="tool-label">
               {uuids.length} uuid{uuids.length > 1 ? "s" : ""} gerado{uuids.length > 1 ? "s" : ""}
             </span>
-            <button className="tool-btn" onClick={copyAll}>
-              {copiedAll ? "copiado ✓" : "copiar todos"}
-            </button>
+            <div className="uuid-header-actions">
+              <button className="tool-btn" onClick={copyAll}>
+                {copiedAll ? "copiado ✓" : "copiar todos"}
+              </button>
+              <button className="tool-btn" onClick={clearAll}>
+                limpar todos
+              </button>
+            </div>
           </div>
 
           <ul className="uuid-list">
             {uuids.map((uuid, index) => (
               <li key={uuid} className="uuid-item">
                 <span className="uuid-value">{uuid}</span>
-                <button
-                  className="tool-btn uuid-copy-btn"
-                  onClick={() => copySingle(uuid, index)}
-                >
-                  {copiedIndex === index ? "✓" : "copiar"}
-                </button>
+                <div className="uuid-item-actions">
+                  <button
+                    className="tool-btn uuid-copy-btn"
+                    onClick={() => copySingle(uuid, index)}
+                  >
+                    {copiedIndex === index ? "✓" : "copiar"}
+                  </button>
+                  <button
+                    className="tool-btn uuid-copy-btn"
+                    onClick={() => clearSingle(index)}
+                  >
+                    limpar
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
