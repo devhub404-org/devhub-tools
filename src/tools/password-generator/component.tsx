@@ -10,8 +10,8 @@ type Strength = "fraca" | "média" | "forte" | "muito forte"
 interface Options {
   lowercase: boolean
   uppercase: boolean
-  numbers: boolean
-  symbols: boolean
+  numbers:   boolean
+  symbols:   boolean
 }
 
 const getStrength = (password: string): Strength => {
@@ -22,7 +22,6 @@ const getStrength = (password: string): Strength => {
   if (/[A-Z]/.test(password)) score++
   if (/[0-9]/.test(password)) score++
   if (/[^a-zA-Z0-9]/.test(password)) score++
-
   if (score <= 2) return "fraca"
   if (score <= 3) return "média"
   if (score <= 4) return "forte"
@@ -43,61 +42,81 @@ const strengthWidth: Record<Strength, string> = {
   "muito forte": "100%",
 }
 
+const generateOne = (options: Options, length: number): string => {
+  let charset = ""
+  if (options.lowercase) charset += LOWERCASE
+  if (options.uppercase) charset += UPPERCASE
+  if (options.numbers)   charset += NUMBERS
+  if (options.symbols)   charset += SYMBOLS
+  if (!charset) return ""
+  const array = new Uint32Array(length)
+  crypto.getRandomValues(array)
+  return Array.from(array).map((val) => charset[val % charset.length]).join("")
+}
+
 const PasswordGeneratorTool: FC = () => {
-  const [length, setLength] = useState(16)
-  const [options, setOptions] = useState<Options>({
+  const [length,   setLength]   = useState(16)
+  const [quantity, setQuantity] = useState(1)
+  const [options,  setOptions]  = useState<Options>({
     lowercase: true,
     uppercase: true,
     numbers:   true,
     symbols:   false,
   })
-  const [password, setPassword] = useState("")
-  const [copied, setCopied]     = useState(false)
+  const [passwords,   setPasswords]   = useState<string[]>([])
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+  const [copiedAll,   setCopiedAll]   = useState(false)
 
   const generate = useCallback(() => {
-    let charset = ""
-    if (options.lowercase) charset += LOWERCASE
-    if (options.uppercase) charset += UPPERCASE
-    if (options.numbers)   charset += NUMBERS
-    if (options.symbols)   charset += SYMBOLS
+    const result = Array.from({ length: quantity }, () => generateOne(options, length))
+    setPasswords(result)
+    setCopiedIndex(null)
+    setCopiedAll(false)
+  }, [length, quantity, options])
 
-    if (!charset) return
-
-    const array  = new Uint32Array(length)
-    crypto.getRandomValues(array)
-    const result = Array.from(array)
-      .map((val) => charset[val % charset.length])
-      .join("")
-
-    setPassword(result)
-    setCopied(false)
-  }, [length, options])
-
-  const copy = useCallback(() => {
-    if (!password) return
-    navigator.clipboard.writeText(password).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+  const copySingle = useCallback((pwd: string, index: number) => {
+    navigator.clipboard.writeText(pwd).then(() => {
+      setCopiedIndex(index)
+      setTimeout(() => setCopiedIndex(null), 2000)
     })
-  }, [password])
+  }, [])
+
+  const clearSingle = useCallback((index: number) => {
+    setPasswords((prev) => prev.filter((_, i) => i !== index))
+    setCopiedIndex(null)
+  }, [])
+
+  const copyAll = useCallback(() => {
+    if (!passwords.length) return
+    navigator.clipboard.writeText(passwords.join("\n")).then(() => {
+      setCopiedAll(true)
+      setTimeout(() => setCopiedAll(false), 2000)
+    })
+  }, [passwords])
+
+  const clearAll = useCallback(() => {
+    setPasswords([])
+    setCopiedIndex(null)
+    setCopiedAll(false)
+  }, [])
 
   const toggleOption = (key: keyof Options) => {
-    const active = Object.values({ ...options, [key]: !options[key] }).filter(Boolean).length
+    const next = { ...options, [key]: !options[key] }
+    const active = Object.values(next).filter(Boolean).length
     if (active === 0) return
-    setOptions((prev) => ({ ...prev, [key]: !prev[key] }))
-    setPassword("")
-    setCopied(false)
+    setOptions(next)
+    setPasswords([])
+    setCopiedIndex(null)
+    setCopiedAll(false)
   }
-
-  const strength = password ? getStrength(password) : null
 
   return (
     <div className="tool-body">
 
       <div className="tool-input-area">
         <div className="pwd-length-header">
-          <span className="tool-label">tamanho</span>
-          <span className="pwd-length-value">{length}</span>
+          <span className="tool-label">tamanho da senha</span>
+          <span className="pwd-length-value">{length} caracteres</span>
         </div>
         <input
           type="range"
@@ -106,14 +125,34 @@ const PasswordGeneratorTool: FC = () => {
           value={length}
           onChange={(e) => {
             setLength(Number(e.target.value))
-            setPassword("")
-            setCopied(false)
+            setPasswords([])
           }}
           className="pwd-range"
         />
         <div className="pwd-range-labels">
           <span>8</span>
           <span>128</span>
+        </div>
+      </div>
+
+      <div className="tool-input-area">
+        <label className="tool-label" htmlFor="pwd-quantity">
+          quantidade
+        </label>
+        <div className="uuid-controls">
+          <input
+            id="pwd-quantity"
+            type="number"
+            min={1}
+            max={20}
+            value={quantity}
+            onChange={(e) => {
+              const val = Math.min(20, Math.max(1, Number(e.target.value)))
+              setQuantity(val)
+              setPasswords([])
+            }}
+            className="tool-input-number"
+          />
         </div>
       </div>
 
@@ -142,42 +181,61 @@ const PasswordGeneratorTool: FC = () => {
 
       <div className="tool-actions">
         <button className="tool-btn tool-btn-primary" onClick={generate}>
-          gerar senha
+          gerar {quantity > 1 ? `${quantity} senhas` : "senha"}
         </button>
       </div>
 
-      {password && (
+      {passwords.length > 0 && (
         <div className="tool-output-area">
           <div className="tool-output-header">
-            <span className="tool-label">senha gerada</span>
-            <button className="tool-btn" onClick={copy}>
-              {copied ? "copiado ✓" : "copiar"}
-            </button>
-          </div>
-
-          <div className="pwd-output">
-            <span className="pwd-value">{password}</span>
-          </div>
-
-          {strength && (
-            <div className="pwd-strength">
-              <div className="pwd-strength-bar">
-                <div
-                  className="pwd-strength-fill"
-                  style={{
-                    width: strengthWidth[strength],
-                    backgroundColor: strengthColor[strength],
-                  }}
-                />
-              </div>
-              <span
-                className="pwd-strength-label"
-                style={{ color: strengthColor[strength] }}
-              >
-                {strength}
-              </span>
+            <span className="tool-label">
+              {passwords.length} senha{passwords.length > 1 ? "s" : ""} gerada{passwords.length > 1 ? "s" : ""}
+            </span>
+            <div className="uuid-header-actions">
+              <button className="tool-btn" onClick={copyAll}>
+                {copiedAll ? "copiado ✓" : "copiar todas"}
+              </button>
+              <button className="tool-btn" onClick={clearAll}>
+                limpar todas
+              </button>
             </div>
-          )}
+          </div>
+
+          <ul className="uuid-list">
+            {passwords.map((pwd, index) => {
+              const strength = getStrength(pwd)
+              return (
+                <li key={index} className="uuid-item pwd-item">
+                  <div className="pwd-item-content">
+                    <span className="uuid-value pwd-value">{pwd}</span>
+                    <div className="pwd-strength-bar">
+                      <div
+                        className="pwd-strength-fill"
+                        style={{
+                          width: strengthWidth[strength],
+                          backgroundColor: strengthColor[strength],
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="uuid-item-actions">
+                    <button
+                      className="tool-btn uuid-copy-btn"
+                      onClick={() => copySingle(pwd, index)}
+                    >
+                      {copiedIndex === index ? "✓" : "copiar"}
+                    </button>
+                    <button
+                      className="tool-btn uuid-copy-btn"
+                      onClick={() => clearSingle(index)}
+                    >
+                      limpar
+                    </button>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
         </div>
       )}
 
