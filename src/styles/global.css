@@ -410,3 +410,115 @@ html, body {
   font-size: 11px;
   padding: 0.25rem 0.6rem;
 }
+
+.pwd-length-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.pwd-length-value {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pwd-range {
+  width: 100%;
+  accent-color: var(--text);
+  cursor: pointer;
+}
+
+.pwd-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.pwd-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.pwd-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.pwd-option-btn:hover {
+  color: var(--text);
+}
+
+.pwd-option-btn.active {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.pwd-option-indicator {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--muted);
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.pwd-option-btn.active .pwd-option-indicator {
+  background-color: var(--text);
+  border-color: var(--text);
+}
+
+.pwd-output {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  word-break: break-all;
+}
+
+.pwd-value {
+  font-size: 15px;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+.pwd-strength {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.pwd-strength-bar {
+  flex: 1;
+  height: 2px;
+  background-color: var(--border);
+}
+
+.pwd-strength-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.pwd-strength-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  min-width: 70px;
+  text-align: right;
+  transition: color 0.3s ease;
+}
