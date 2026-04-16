@@ -363,6 +363,11 @@ html, body {
   border-color: var(--muted);
 }
 
+.uuid-header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .uuid-list {
   list-style: none;
   display: flex;
@@ -395,8 +400,13 @@ html, body {
   flex: 1;
 }
 
+.uuid-item-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
 .uuid-copy-btn {
   font-size: 11px;
   padding: 0.25rem 0.6rem;
-  flex-shrink: 0;
 }
